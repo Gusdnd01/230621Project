@@ -238,21 +238,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   windowIndex: 0
   className: on
-  datas:
-  - isCorrecting: 0
-    percent: 30
-  - isCorrecting: 0
-    percent: 30
-  - isCorrecting: 0
-    percent: 30
-  - isCorrecting: 0
-    percent: 30
-  prefab: {fileID: 4567243645756282160, guid: 8b49e936e1b01f14b98d802f9fc32a63, type: 3}
-  pointer: {fileID: 1330529546}
-  mats:
-  - {fileID: 2100000, guid: cff88d2a17e3406458d063b9f9e1d015, type: 2}
-  - {fileID: 2100000, guid: fd9114ebd7cc49c439028b609d625d27, type: 2}
-  _waitingTime: 1
+  time: 1
+  cnt: 5
+  at: 
 --- !u!4 &737964809
 Transform:
   m_ObjectHideFlags: 0
@@ -446,6 +434,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Compass_02
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 4297f6a7ea7c3fc4c8f8c3abaf4bb26e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7202271454713460447, guid: 4297f6a7ea7c3fc4c8f8c3abaf4bb26e, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -471,6 +463,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   north: {fileID: 1042007057}
   compass: {fileID: 933951643}
+  player: {fileID: 0}
+  mulAmount: 3
 --- !u!4 &933951643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4292154010595695564, guid: 4297f6a7ea7c3fc4c8f8c3abaf4bb26e, type: 3}
