@@ -1,0 +1,25 @@
+.fishingPanel {
+    left: 117px;
+    right: 1083px;
+    bottom: -47%;
+    position: absolute;
+    transition-duration: 0.5s;
+}
+
+.fishingPanel.on {
+    bottom: 56%;
+}
+
+.fishingable {
+    background-image: url('project://database/Packages/com.unity.timeline/Editor/StyleSheets/Images/Shared/TimelineWarning.png?fileID=2800000&guid=1732e542f535d374bbfa7565fc78414e&type=3#TimelineWarning');
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    left: 45%;
+    top: 105%;
+    transition-duration: 0.2s;
+}
+
+.fishingable.on {
+    top: 5%;
+}
