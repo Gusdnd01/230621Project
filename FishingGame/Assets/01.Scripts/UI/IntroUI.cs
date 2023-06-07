@@ -15,10 +15,13 @@ public class IntroUI : MonoBehaviour
     private VisualElement _startBtn;
     private VisualElement _optionBtn;
     private VisualElement _quitBtn;
+    private VisualElement _optionQuitBtn;
 
     private VisualElement _titleImage;
     private VisualElement _optionWindow;
     private VisualElement _quitWindow;
+
+    [SerializeField] private string _startClassName;
 
     private void Awake()
     {
@@ -33,6 +36,9 @@ public class IntroUI : MonoBehaviour
         _optionBtn = _root.Q("OptionBtn");
         _quitBtn = _root.Q("QuitBtn");
 
+        _optionWindow = _root.Q("OptionWindow");
+        _optionQuitBtn = _root.Q("OptionQuitBtn");
+
         _titleImage = _root.Q("TitleImage");
     }
 
@@ -42,18 +48,22 @@ public class IntroUI : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
         });
         _optionBtn.RegisterCallback<ClickEvent>(e=>{
-            _optionWindow.AddToClassList("start");//옵션 윈도우 켜기
+            _optionWindow.AddToClassList(_startClassName);//옵션 윈도우 켜기
         });
         _quitBtn.RegisterCallback<ClickEvent>(e=>{
-            Application.Quit();//ㅣㅇㅁ시로 놓은거고 나중에 디테일 작업해야함
+            Application.Quit();//임시로 놓은거고 나중에 디테일 작업해야함
+        });
+
+        _optionQuitBtn.RegisterCallback<ClickEvent>(e=>{
+            _optionWindow.RemoveFromClassList(_startClassName);
         });
 
         StartCoroutine(DelayCoroutine(0.5f, () =>
         {
-            _startBtn.AddToClassList("start");
-            _optionBtn.AddToClassList("start");
-            _quitBtn.AddToClassList("start");
-            _titleImage.AddToClassList("start");
+            _startBtn.AddToClassList(_startClassName);
+            _optionBtn.AddToClassList(_startClassName);
+            _quitBtn.AddToClassList(_startClassName);
+            _titleImage.AddToClassList(_startClassName);
         }));
     }
 

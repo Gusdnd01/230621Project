@@ -24,7 +24,7 @@ Material:
     m_TexEnvs:
     - _TextureSample0:
         m_Texture: {fileID: 2800000, guid: cba05dd92e71fcb48a1aac76c4c30af5, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 0.5, y: 0.5}
         m_Offset: {x: 0, y: 0}
     - _texcoord:
         m_Texture: {fileID: 0}
@@ -45,7 +45,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _AlphaCutoff: 0.5
-    - _Dissolve: 0.21
+    - _Dissolve: 0.38
     - _Keyword0: 1
     - _QueueControl: 0
     - _QueueOffset: 0

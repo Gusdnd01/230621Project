@@ -15,7 +15,7 @@ public class Water : MonoBehaviour
     private void Update() {
         Vector3[] vertices = mf.mesh.vertices;
         for(int i = 0; i < vertices.Length; i++){
-            vertices[i].y = WaveManager.Instance.GetWaveHeight(transform.position.x + vertices[i].x) + WaveManager.Instance.GetWaveHeight(transform.position.x + vertices[i].z);
+            vertices[i].y = WaveManager.Instance.GetWaveHeight(transform.position.x + vertices[i].x);
         }
         mf.mesh.vertices = vertices;
         mf.mesh.RecalculateNormals();

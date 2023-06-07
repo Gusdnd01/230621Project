@@ -3,9 +3,7 @@
     <ui:VisualElement name="Root" style="flex-grow: 1;">
         <ui:VisualElement name="TimeCircle" />
         <ui:VisualElement name="Engine" />
-        <ui:VisualElement name="FishingWindow" class="fishingPanel" style="height: 404px; background-color: rgb(46, 0, 0); border-top-left-radius: 6px; border-bottom-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px;">
-            <ui:VisualElement />
-        </ui:VisualElement>
+        <ui:VisualElement name="FishingWindow" class="fishingPanel" style="height: 404px; background-color: rgb(46, 0, 0); border-top-left-radius: 6px; border-bottom-left-radius: 6px; border-top-right-radius: 6px; border-bottom-right-radius: 6px; flex-direction: row; align-items: center; justify-content: flex-start;" />
         <ui:VisualElement name="Fishingable" class="fishingable" />
     </ui:VisualElement>
 </ui:UXML>

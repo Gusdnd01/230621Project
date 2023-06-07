@@ -11,15 +11,16 @@ public class PlayerMovement : MonoBehaviour
     public float MaxSpeed = 1f;
     public float Drag = .5f;
     float fade;
-    public ParticleSystem _wave_01;
-    public ParticleSystem _wave_02;
 
+    public ParticleSystem bubble;
+    ParticleSystem.EmissionModule module;
     protected Rigidbody rb;
     protected Quaternion StartRotation;
 
     private void Awake() {
         rb = GetComponent<Rigidbody>();
         StartRotation = Motor.localRotation;
+        module = bubble.emission;
     }
 
     private void FixedUpdate() {
@@ -45,16 +46,14 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetKey(KeyCode.W)){
             PhysicsHelper.ApplyForceToReachVelocity(rb, forward * MaxSpeed, Power);
+            
         }
 
         if(Input.GetKey(KeyCode.S)){
             PhysicsHelper.ApplyForceToReachVelocity(rb, forward * -MaxSpeed, Power);
         }
-        fade = Input.GetAxis("Vertical")-1;
-        fade = Mathf.Clamp(fade, -1, -.45f);
-
-        _wave_01.customData.SetVector(ParticleSystemCustomData.Custom1, 0, new ParticleSystem.MinMaxCurve(fade, fade));
-        _wave_02.customData.SetVector(ParticleSystemCustomData.Custom1, 0, new ParticleSystem.MinMaxCurve(fade, fade));
+        fade = Input.GetAxis("Vertical");
+        module.rateOverTime = fade * 30;
 
         Motor.SetPositionAndRotation(Motor.position, transform.rotation * StartRotation * Quaternion.Euler(0,30f * steer,0));
     }

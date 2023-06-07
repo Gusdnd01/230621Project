@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class FishingRoutineController : ActionBase
 {
-    public Action OnFishingTrigger = null;
+    public UnityEvent OnFishingTrigger = null;
 
     public UnityEvent<int, string> OnFishingableTrigger;
     public UnityEvent<int, string> OnDisfishingableTrigger;
@@ -53,5 +53,9 @@ public class FishingRoutineController : ActionBase
             OnDisfishingableTrigger?.Invoke(windowIndex, className);
             OnFishingTrigger?.Invoke();
         }
+    }
+
+    public void FishingEnd(){
+        _isFishing = false;
     }
 }

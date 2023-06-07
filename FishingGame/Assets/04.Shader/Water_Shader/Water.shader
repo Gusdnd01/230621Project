@@ -4,8 +4,8 @@ Shader "HYUN/Water"
 {
 	Properties
 	{
-		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[HideInInspector] _EmissionColor("Emission Color", Color) = (1,1,1,1)
+		[HideInInspector] _AlphaCutoff("Alpha Cutoff ", Range(0, 1)) = 0.5
 		[ASEBegin]_Foam_Speed("Foam_Speed", Float) = 1
 		_Foam_Amount("Foam_Amount", Float) = 1
 		_Foam_Scale("Foam_Scale", Float) = 15
@@ -16,7 +16,12 @@ Shader "HYUN/Water"
 		_Normal_Texture("Normal_Texture", 2D) = "bump" {}
 		_Normal_UPanner("Normal_UPanner", Float) = 0
 		_Normal_VPanner("Normal_VPanner", Float) = 0
-		[ASEEnd]_Normal_str("Normal_str", Float) = 0
+		_Normal_str("Normal_str", Float) = 0
+		_Texture0("Texture 0", 2D) = "white" {}
+		_Offset("Offset", Vector) = (0.05,0,0,0)
+		_Tiling("Tiling", Vector) = (10,10,0,0)
+		_TextureSample2("Texture Sample 2", 2D) = "white" {}
+		[ASEEnd]_Drawing_str("Drawing_str", Float) = 0.55
 
 
 		//_TransmissionShadow( "Transmission Shadow", Range( 0, 1 ) ) = 0.5
@@ -285,6 +290,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -324,6 +332,8 @@ Shader "HYUN/Water"
 				int _PassValue;
 			#endif
 
+			sampler2D _TextureSample2;
+			sampler2D _Texture0;
 			uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _Normal_Texture;
 
@@ -577,12 +587,20 @@ Shader "HYUN/Water"
 
 				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
+				float2 texCoord160 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 ase_screenPosNorm = ScreenPos / ScreenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+				float4 temp_output_144_0 = (( ( _ScreenParams.y / _ScreenParams.x ) * ase_screenPosNorm )*float4( _Tiling, 0.0 , 0.0 ) + float4( ( ( _TimeParameters.x * _Offset ) + ( floor( ( ( _TimeParameters.x * 2.5 ) % 2.0 ) ) * 0.5 ) ), 0.0 , 0.0 ));
+				float4 lerpResult153 = lerp( tex2D( _Texture0, ( temp_output_144_0 * float4( 0.32,0.32,0.32,0.32 ) ).xy ) , tex2D( _Texture0, temp_output_144_0.xy ) , 0.5);
+				float4 temp_cast_5 = (0.35).xxxx;
+				float4 temp_output_157_0 = ( -1.02 * ( lerpResult153 - temp_cast_5 ) );
+				float4 tex2DNode161 = tex2D( _TextureSample2, ( float4( texCoord160, 0.0 , 0.0 ) + temp_output_157_0 ).rg );
+				float4 temp_cast_7 = (0.35).xxxx;
+				float4 lerpResult165 = lerp( tex2DNode161 , ( tex2DNode161 * temp_output_157_0 ) , _Drawing_str);
 				float screenDepth11 = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH( ase_screenPosNorm.xy ),_ZBufferParams);
 				float distanceDepth11 = abs( ( screenDepth11 - LinearEyeDepth( ase_screenPosNorm.z,_ZBufferParams ) ) / ( _Foam_Amount ) );
-				float2 temp_cast_0 = (( _TimeParameters.x * _Foam_Speed )).xx;
-				float2 texCoord16 = IN.ase_texcoord8.xy * float2( 1,1 ) + temp_cast_0;
+				float2 temp_cast_8 = (( _TimeParameters.x * _Foam_Speed )).xx;
+				float2 texCoord16 = IN.ase_texcoord8.xy * float2( 1,1 ) + temp_cast_8;
 				float gradientNoise17 = UnityGradientNoise(texCoord16,_Foam_Scale);
 				gradientNoise17 = gradientNoise17*0.5 + 0.5;
 				float4 lerpResult30 = lerp( _Albedo , Foam_Color , ( step( ( distanceDepth11 * _Foam_Cutoff ) , gradientNoise17 ) * Foam_Color1.a ));
@@ -594,7 +612,7 @@ Shader "HYUN/Water"
 				unpack120.z = lerp( 1, unpack120.z, saturate(_Normal_str) );
 				
 
-				float3 BaseColor = lerpResult30.rgb;
+				float3 BaseColor = ( lerpResult165 * lerpResult30 ).rgb;
 				float3 Normal = ( unpack120 * _Normal_str );
 				float3 Emission = 0;
 				float3 Specular = 0.5;
@@ -865,6 +883,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -1179,6 +1200,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -1477,6 +1501,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -1516,6 +1543,8 @@ Shader "HYUN/Water"
 				int _PassValue;
 			#endif
 
+			sampler2D _TextureSample2;
+			sampler2D _Texture0;
 			uniform float4 _CameraDepthTexture_TexelSize;
 
 
@@ -1558,12 +1587,12 @@ Shader "HYUN/Water"
 
 				float4 ase_clipPos = TransformObjectToHClip((v.vertex).xyz);
 				float4 screenPos = ComputeScreenPos(ase_clipPos);
-				o.ase_texcoord4 = screenPos;
+				o.ase_texcoord5 = screenPos;
 				
-				o.ase_texcoord5.xy = v.texcoord0.xy;
+				o.ase_texcoord4.xy = v.texcoord0.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord5.zw = 0;
+				o.ase_texcoord4.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -1714,19 +1743,27 @@ Shader "HYUN/Water"
 					#endif
 				#endif
 
-				float4 screenPos = IN.ase_texcoord4;
+				float2 texCoord160 = IN.ase_texcoord4.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 screenPos = IN.ase_texcoord5;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+				float4 temp_output_144_0 = (( ( _ScreenParams.y / _ScreenParams.x ) * ase_screenPosNorm )*float4( _Tiling, 0.0 , 0.0 ) + float4( ( ( _TimeParameters.x * _Offset ) + ( floor( ( ( _TimeParameters.x * 2.5 ) % 2.0 ) ) * 0.5 ) ), 0.0 , 0.0 ));
+				float4 lerpResult153 = lerp( tex2D( _Texture0, ( temp_output_144_0 * float4( 0.32,0.32,0.32,0.32 ) ).xy ) , tex2D( _Texture0, temp_output_144_0.xy ) , 0.5);
+				float4 temp_cast_5 = (0.35).xxxx;
+				float4 temp_output_157_0 = ( -1.02 * ( lerpResult153 - temp_cast_5 ) );
+				float4 tex2DNode161 = tex2D( _TextureSample2, ( float4( texCoord160, 0.0 , 0.0 ) + temp_output_157_0 ).rg );
+				float4 temp_cast_7 = (0.35).xxxx;
+				float4 lerpResult165 = lerp( tex2DNode161 , ( tex2DNode161 * temp_output_157_0 ) , _Drawing_str);
 				float screenDepth11 = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH( ase_screenPosNorm.xy ),_ZBufferParams);
 				float distanceDepth11 = abs( ( screenDepth11 - LinearEyeDepth( ase_screenPosNorm.z,_ZBufferParams ) ) / ( _Foam_Amount ) );
-				float2 temp_cast_0 = (( _TimeParameters.x * _Foam_Speed )).xx;
-				float2 texCoord16 = IN.ase_texcoord5.xy * float2( 1,1 ) + temp_cast_0;
+				float2 temp_cast_8 = (( _TimeParameters.x * _Foam_Speed )).xx;
+				float2 texCoord16 = IN.ase_texcoord4.xy * float2( 1,1 ) + temp_cast_8;
 				float gradientNoise17 = UnityGradientNoise(texCoord16,_Foam_Scale);
 				gradientNoise17 = gradientNoise17*0.5 + 0.5;
 				float4 lerpResult30 = lerp( _Albedo , Foam_Color , ( step( ( distanceDepth11 * _Foam_Cutoff ) , gradientNoise17 ) * Foam_Color1.a ));
 				
 
-				float3 BaseColor = lerpResult30.rgb;
+				float3 BaseColor = ( lerpResult165 * lerpResult30 ).rgb;
 				float3 Emission = 0;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
@@ -1815,6 +1852,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -1854,6 +1894,8 @@ Shader "HYUN/Water"
 				int _PassValue;
 			#endif
 
+			sampler2D _TextureSample2;
+			sampler2D _Texture0;
 			uniform float4 _CameraDepthTexture_TexelSize;
 
 
@@ -1896,12 +1938,12 @@ Shader "HYUN/Water"
 
 				float4 ase_clipPos = TransformObjectToHClip((v.vertex).xyz);
 				float4 screenPos = ComputeScreenPos(ase_clipPos);
-				o.ase_texcoord2 = screenPos;
+				o.ase_texcoord3 = screenPos;
 				
-				o.ase_texcoord3.xy = v.ase_texcoord.xy;
+				o.ase_texcoord2.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord3.zw = 0;
+				o.ase_texcoord2.zw = 0;
 
 				#ifdef ASE_ABSOLUTE_VERTEX_POS
 					float3 defaultVertexValue = v.vertex.xyz;
@@ -2037,19 +2079,27 @@ Shader "HYUN/Water"
 					#endif
 				#endif
 
-				float4 screenPos = IN.ase_texcoord2;
+				float2 texCoord160 = IN.ase_texcoord2.xy * float2( 1,1 ) + float2( 0,0 );
+				float4 screenPos = IN.ase_texcoord3;
 				float4 ase_screenPosNorm = screenPos / screenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+				float4 temp_output_144_0 = (( ( _ScreenParams.y / _ScreenParams.x ) * ase_screenPosNorm )*float4( _Tiling, 0.0 , 0.0 ) + float4( ( ( _TimeParameters.x * _Offset ) + ( floor( ( ( _TimeParameters.x * 2.5 ) % 2.0 ) ) * 0.5 ) ), 0.0 , 0.0 ));
+				float4 lerpResult153 = lerp( tex2D( _Texture0, ( temp_output_144_0 * float4( 0.32,0.32,0.32,0.32 ) ).xy ) , tex2D( _Texture0, temp_output_144_0.xy ) , 0.5);
+				float4 temp_cast_5 = (0.35).xxxx;
+				float4 temp_output_157_0 = ( -1.02 * ( lerpResult153 - temp_cast_5 ) );
+				float4 tex2DNode161 = tex2D( _TextureSample2, ( float4( texCoord160, 0.0 , 0.0 ) + temp_output_157_0 ).rg );
+				float4 temp_cast_7 = (0.35).xxxx;
+				float4 lerpResult165 = lerp( tex2DNode161 , ( tex2DNode161 * temp_output_157_0 ) , _Drawing_str);
 				float screenDepth11 = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH( ase_screenPosNorm.xy ),_ZBufferParams);
 				float distanceDepth11 = abs( ( screenDepth11 - LinearEyeDepth( ase_screenPosNorm.z,_ZBufferParams ) ) / ( _Foam_Amount ) );
-				float2 temp_cast_0 = (( _TimeParameters.x * _Foam_Speed )).xx;
-				float2 texCoord16 = IN.ase_texcoord3.xy * float2( 1,1 ) + temp_cast_0;
+				float2 temp_cast_8 = (( _TimeParameters.x * _Foam_Speed )).xx;
+				float2 texCoord16 = IN.ase_texcoord2.xy * float2( 1,1 ) + temp_cast_8;
 				float gradientNoise17 = UnityGradientNoise(texCoord16,_Foam_Scale);
 				gradientNoise17 = gradientNoise17*0.5 + 0.5;
 				float4 lerpResult30 = lerp( _Albedo , Foam_Color , ( step( ( distanceDepth11 * _Foam_Cutoff ) , gradientNoise17 ) * Foam_Color1.a ));
 				
 
-				float3 BaseColor = lerpResult30.rgb;
+				float3 BaseColor = ( lerpResult165 * lerpResult30 ).rgb;
 				float Alpha = 1;
 				float AlphaClipThreshold = 0.5;
 
@@ -2133,6 +2183,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -2506,6 +2559,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -2545,6 +2601,8 @@ Shader "HYUN/Water"
 				int _PassValue;
 			#endif
 
+			sampler2D _TextureSample2;
+			sampler2D _Texture0;
 			uniform float4 _CameraDepthTexture_TexelSize;
 			sampler2D _Normal_Texture;
 
@@ -2791,12 +2849,20 @@ Shader "HYUN/Water"
 
 				WorldViewDirection = SafeNormalize( WorldViewDirection );
 
+				float2 texCoord160 = IN.ase_texcoord8.xy * float2( 1,1 ) + float2( 0,0 );
 				float4 ase_screenPosNorm = ScreenPos / ScreenPos.w;
 				ase_screenPosNorm.z = ( UNITY_NEAR_CLIP_VALUE >= 0 ) ? ase_screenPosNorm.z : ase_screenPosNorm.z * 0.5 + 0.5;
+				float4 temp_output_144_0 = (( ( _ScreenParams.y / _ScreenParams.x ) * ase_screenPosNorm )*float4( _Tiling, 0.0 , 0.0 ) + float4( ( ( _TimeParameters.x * _Offset ) + ( floor( ( ( _TimeParameters.x * 2.5 ) % 2.0 ) ) * 0.5 ) ), 0.0 , 0.0 ));
+				float4 lerpResult153 = lerp( tex2D( _Texture0, ( temp_output_144_0 * float4( 0.32,0.32,0.32,0.32 ) ).xy ) , tex2D( _Texture0, temp_output_144_0.xy ) , 0.5);
+				float4 temp_cast_5 = (0.35).xxxx;
+				float4 temp_output_157_0 = ( -1.02 * ( lerpResult153 - temp_cast_5 ) );
+				float4 tex2DNode161 = tex2D( _TextureSample2, ( float4( texCoord160, 0.0 , 0.0 ) + temp_output_157_0 ).rg );
+				float4 temp_cast_7 = (0.35).xxxx;
+				float4 lerpResult165 = lerp( tex2DNode161 , ( tex2DNode161 * temp_output_157_0 ) , _Drawing_str);
 				float screenDepth11 = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH( ase_screenPosNorm.xy ),_ZBufferParams);
 				float distanceDepth11 = abs( ( screenDepth11 - LinearEyeDepth( ase_screenPosNorm.z,_ZBufferParams ) ) / ( _Foam_Amount ) );
-				float2 temp_cast_0 = (( _TimeParameters.x * _Foam_Speed )).xx;
-				float2 texCoord16 = IN.ase_texcoord8.xy * float2( 1,1 ) + temp_cast_0;
+				float2 temp_cast_8 = (( _TimeParameters.x * _Foam_Speed )).xx;
+				float2 texCoord16 = IN.ase_texcoord8.xy * float2( 1,1 ) + temp_cast_8;
 				float gradientNoise17 = UnityGradientNoise(texCoord16,_Foam_Scale);
 				gradientNoise17 = gradientNoise17*0.5 + 0.5;
 				float4 lerpResult30 = lerp( _Albedo , Foam_Color , ( step( ( distanceDepth11 * _Foam_Cutoff ) , gradientNoise17 ) * Foam_Color1.a ));
@@ -2808,7 +2874,7 @@ Shader "HYUN/Water"
 				unpack120.z = lerp( 1, unpack120.z, saturate(_Normal_str) );
 				
 
-				float3 BaseColor = lerpResult30.rgb;
+				float3 BaseColor = ( lerpResult165 * lerpResult30 ).rgb;
 				float3 Normal = ( unpack120 * _Normal_str );
 				float3 Emission = 0;
 				float3 Specular = 0.5;
@@ -2977,6 +3043,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -3233,6 +3302,9 @@ Shader "HYUN/Water"
 			float4 Foam_Color;
 			float4 Foam_Color1;
 			float4 _Normal_Texture_ST;
+			float2 _Tiling;
+			float2 _Offset;
+			float _Drawing_str;
 			float _Foam_Amount;
 			float _Foam_Cutoff;
 			float _Foam_Speed;
@@ -3469,13 +3541,45 @@ Node;AmplifyShaderEditor.ColorNode;26;-823.0983,562.5438;Inherit;False;Property;
 Node;AmplifyShaderEditor.PannerNode;122;-52.31006,669.3735;Inherit;False;3;0;FLOAT2;0,0;False;2;FLOAT2;0,0;False;1;FLOAT;1;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.DynamicAppendNode;125;-205.3101,793.3735;Inherit;False;FLOAT2;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.TextureCoordinatesNode;121;-321.3101,624.3735;Inherit;False;0;120;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;123;-335.3101,769.3735;Inherit;False;Property;_Normal_UPanner;Normal_UPanner;8;0;Create;True;0;0;0;False;0;False;0;1.39;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;124;-341.3101,827.3735;Inherit;False;Property;_Normal_VPanner;Normal_VPanner;9;0;Create;True;0;0;0;False;0;False;0;1.21;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;123;-335.3101,769.3735;Inherit;False;Property;_Normal_UPanner;Normal_UPanner;8;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;124;-341.3101,827.3735;Inherit;False;Property;_Normal_VPanner;Normal_VPanner;9;0;Create;True;0;0;0;False;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;111;650,194.7;Float;False;True;-1;2;UnityEditor.ShaderGraphLitGUI;0;12;HYUN/Water;94348b07e5e8bab40bd6c8a1e3df54cd;True;Forward;0;1;Forward;19;False;False;False;False;False;False;False;False;False;False;False;False;True;0;False;;False;True;0;False;;False;False;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;True;3;False;;True;True;0;False;;0;False;;True;4;RenderPipeline=UniversalPipeline;RenderType=Transparent=RenderType;Queue=Transparent=Queue=0;UniversalMaterialType=Lit;True;3;True;12;all;0;False;True;1;1;False;;1;False;;1;1;False;;10;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;False;True;False;0;False;;255;False;;255;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;0;False;;True;True;0;False;;True;0;False;;True;True;0;False;;0;False;;True;1;LightMode=UniversalForward;False;False;0;;0;0;Standard;41;Workflow;1;0;Surface;1;638198518466961626;  Refraction Model;0;0;  Blend;2;638198518486244190;Two Sided;1;0;Fragment Normal Space,InvertActionOnDeselection;0;0;Forward Only;0;0;Transmission;0;0;  Transmission Shadow;0.5,False,;0;Translucency;0;0;  Translucency Strength;1,False,;0;  Normal Distortion;0.5,False,;0;  Scattering;2,False,;0;  Direct;0.9,False,;0;  Ambient;0.1,False,;0;  Shadow;0.5,False,;0;Cast Shadows;1;0;  Use Shadow Threshold;0;0;Receive Shadows;1;0;GPU Instancing;1;0;LOD CrossFade;1;0;Built-in Fog;1;0;_FinalColorxAlpha;0;0;Meta Pass;1;0;Override Baked GI;0;0;Extra Pre Pass;0;0;DOTS Instancing;0;0;Tessellation;0;0;  Phong;0;0;  Strength;0.5,False,;0;  Type;0;0;  Tess;16,False,;0;  Min;10,False,;0;  Max;25,False,;0;  Edge Length;16,False,;0;  Max Displacement;25,False,;0;Write Depth;0;0;  Early Z;0;0;Vertex Position,InvertActionOnDeselection;1;0;Debug Display;0;0;Clear Coat;0;0;0;10;False;True;True;True;True;True;True;True;True;True;False;;False;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;126;474.6899,579.3735;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SamplerNode;120;187.6899,575.3735;Inherit;True;Property;_Normal_Texture;Normal_Texture;7;0;Create;True;0;0;0;False;0;False;-1;bc999eddf05766243aaece1c73a4d212;bc999eddf05766243aaece1c73a4d212;True;0;True;bump;Auto;True;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.RangedFloatNode;127;-23.3101,824.3735;Inherit;False;Property;_Normal_str;Normal_str;10;0;Create;True;0;0;0;False;0;False;0;0.44;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ColorNode;59;-349.8974,-63.41304;Inherit;False;Property;_Albedo;Albedo;6;0;Create;True;0;0;0;False;0;False;0,0,0,0;0.1372547,0.6096127,1,0.4666667;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.RangedFloatNode;127;-23.3101,824.3735;Inherit;False;Property;_Normal_str;Normal_str;10;0;Create;True;0;0;0;False;0;False;0;1;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ColorNode;59;-349.8974,-63.41304;Inherit;False;Property;_Albedo;Albedo;6;0;Create;True;0;0;0;False;0;False;0,0,0,0;0.1372547,0.6096127,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;137;-2801.233,-103.0665;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleRemainderNode;139;-2684.233,-103.0665;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;2;False;1;FLOAT;0
+Node;AmplifyShaderEditor.FloorOpNode;140;-2551.233,-103.0665;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;141;-2444.233,-103.0665;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT;0.5;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleTimeNode;136;-2969.233,-103.0665;Inherit;False;1;0;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleAddOpNode;142;-2294.628,-178.2938;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT;0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.ScaleAndOffsetNode;144;-2042.846,-438.3795;Inherit;False;3;0;FLOAT4;0,0,0,0;False;1;FLOAT4;1,0,0,0;False;2;FLOAT4;0,0,0,0;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.ScreenParams;128;-2807.209,-721.0359;Inherit;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ScreenPosInputsNode;129;-2822.99,-541.9348;Float;False;0;False;0;5;FLOAT4;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleDivideOpNode;146;-2606.293,-700.2025;Inherit;False;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;148;-2468.293,-528.2025;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT4;0,0,0,0;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.TexturePropertyNode;150;-2124.806,-642.6722;Inherit;True;Property;_Texture0;Texture 0;11;0;Create;True;0;0;0;False;0;False;None;fb89fd8f55fe9554f915d2c24ea1de8d;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
+Node;AmplifyShaderEditor.SamplerNode;149;-1813.325,-465.7323;Inherit;True;Property;_TextureSample0;Texture Sample 0;11;0;Create;True;0;0;0;False;0;False;-1;None;fb89fd8f55fe9554f915d2c24ea1de8d;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SamplerNode;151;-1795.969,-869.8864;Inherit;True;Property;_TextureSample1;Texture Sample 1;12;0;Create;True;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.LerpOp;153;-1296.857,-629.4999;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;154;-1510.057,-216.0999;Inherit;False;Constant;_Float1;Float 1;12;0;Create;True;0;0;0;False;0;False;0.5;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;156;-1151.161,-414.7383;Inherit;False;Constant;_Float2;Float 2;12;0;Create;True;0;0;0;False;0;False;0.35;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.SimpleSubtractOpNode;155;-959.161,-635.7384;Inherit;True;2;0;COLOR;0,0,0,0;False;1;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;157;-689.1611,-785.7384;Inherit;True;2;2;0;FLOAT;0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.RangedFloatNode;158;-962.1611,-849.7384;Inherit;False;Constant;_Float3;Float 3;12;0;Create;True;0;0;0;False;0;False;-1.02;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.TextureCoordinatesNode;160;-788.1611,-1027.739;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleAddOpNode;159;-505.787,-963.7842;Inherit;False;2;2;0;FLOAT2;0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SamplerNode;161;-285.787,-1027.784;Inherit;True;Property;_TextureSample2;Texture Sample 2;14;0;Create;True;0;0;0;False;0;False;-1;None;37e6f91f3efb0954cbdce254638862ea;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;164;91.075,-793.9631;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.LerpOp;165;289.0561,-1028.661;Inherit;True;3;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;2;FLOAT;0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;167;484.7654,161.4136;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;152;-1921.447,-835.3804;Inherit;False;2;2;0;FLOAT4;0,0,0,0;False;1;FLOAT4;0.32,0.32,0.32,0.32;False;1;FLOAT4;0
+Node;AmplifyShaderEditor.RangedFloatNode;138;-2945.233,-40.06655;Inherit;False;Constant;_Float0;Float 0;11;0;Create;True;0;0;0;False;0;False;2.5;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;166;139.0562,-654.661;Inherit;False;Property;_Drawing_str;Drawing_str;15;0;Create;True;0;0;0;False;0;False;0.55;0.78;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.Vector2Node;145;-2479.847,-415.3795;Inherit;False;Property;_Tiling;Tiling;13;0;Create;True;0;0;0;False;0;False;10,10;10,10;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
+Node;AmplifyShaderEditor.SimpleMultiplyOpNode;168;-2501.77,-248.2455;Inherit;False;2;2;0;FLOAT;0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
+Node;AmplifyShaderEditor.Vector2Node;143;-2675.847,-277.3795;Inherit;False;Property;_Offset;Offset;12;0;Create;True;0;0;0;False;0;False;0.05,0;0.05,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 WireConnection;11;0;15;0
 WireConnection;22;0;11;0
 WireConnection;22;1;23;0
@@ -3497,11 +3601,49 @@ WireConnection;122;0;121;0
 WireConnection;122;2;125;0
 WireConnection;125;0;123;0
 WireConnection;125;1;124;0
-WireConnection;111;0;30;0
+WireConnection;111;0;167;0
 WireConnection;111;1;126;0
 WireConnection;126;0;120;0
 WireConnection;126;1;127;0
 WireConnection;120;1;122;0
 WireConnection;120;5;127;0
+WireConnection;137;0;136;0
+WireConnection;137;1;138;0
+WireConnection;139;0;137;0
+WireConnection;140;0;139;0
+WireConnection;141;0;140;0
+WireConnection;142;0;168;0
+WireConnection;142;1;141;0
+WireConnection;144;0;148;0
+WireConnection;144;1;145;0
+WireConnection;144;2;142;0
+WireConnection;146;0;128;2
+WireConnection;146;1;128;1
+WireConnection;148;0;146;0
+WireConnection;148;1;129;0
+WireConnection;149;0;150;0
+WireConnection;149;1;144;0
+WireConnection;151;0;150;0
+WireConnection;151;1;152;0
+WireConnection;153;0;151;0
+WireConnection;153;1;149;0
+WireConnection;153;2;154;0
+WireConnection;155;0;153;0
+WireConnection;155;1;156;0
+WireConnection;157;0;158;0
+WireConnection;157;1;155;0
+WireConnection;159;0;160;0
+WireConnection;159;1;157;0
+WireConnection;161;1;159;0
+WireConnection;164;0;161;0
+WireConnection;164;1;157;0
+WireConnection;165;0;161;0
+WireConnection;165;1;164;0
+WireConnection;165;2;166;0
+WireConnection;167;0;165;0
+WireConnection;167;1;30;0
+WireConnection;152;0;144;0
+WireConnection;168;0;136;0
+WireConnection;168;1;143;0
 ASEEND*/
-//CHKSM=831BD2F4E3BB946097C51107A619D757253AA366
+//CHKSM=FFADECE3DA446179AEF5D77924EEBCE256FA4F6B

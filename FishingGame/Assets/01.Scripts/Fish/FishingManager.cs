@@ -25,12 +25,18 @@ public class FishingManager : ActionBase
     [SerializeField] private float waterDepth;
 
     public UnityEvent<int, string> OnFishingStartTrigger = null;
+    public UnityEvent<int> OnFishingSetter = null;
     public UnityEvent<int, string> OnFishingEndTrigger = null;
+    public UnityEvent OnFishingEnder = null;
 
     [SerializeField]
     private List<ARROW_TYPE> at = new List<ARROW_TYPE>();
 
-    private void Awake() {
+    [SerializeField]
+    private MainUI mainUI;
+
+    private void Awake()
+    {
         Instance = this;
     }
 
@@ -43,23 +49,24 @@ public class FishingManager : ActionBase
     private IEnumerator StartFishing(float time)
     {
         OnFishingStartTrigger?.Invoke(windowIndex, className);
+        int randNum = 0;
         for (int i = 0; i < cnt; ++i)
         {
-            at.Add((ARROW_TYPE)Random.Range(0, 4));
+            randNum = Random.Range(0, 4);
+            at.Add((ARROW_TYPE)randNum);
+            OnFishingSetter?.Invoke(randNum);
         }
 
         while (waterDepth > 0)
         {
-            //그리는 작업
-            /* for(int i =0; i < cnt; ++i){
-
-            } */
-
             if (at.Count <= 0)
             {
+                waterDepth -= 2f;
                 for (int i = 0; i < cnt; ++i)
                 {
-                    at.Add((ARROW_TYPE)Random.Range(0, 4));
+                    randNum = Random.Range(0, 4);
+                    at.Add((ARROW_TYPE)randNum);
+                    OnFishingSetter?.Invoke(randNum);
                 }
             }
             else
@@ -67,26 +74,26 @@ public class FishingManager : ActionBase
                 if (Input.GetKeyDown(KeyCode.UpArrow) && at[0] == ARROW_TYPE.UP)
                 {
                     print("up");
+                    mainUI.Remover();
                     at.RemoveAt(0);
-                    waterDepth -= 0.5f;
                 }
                 else if (Input.GetKeyDown(KeyCode.DownArrow) && at[0] == ARROW_TYPE.DOWN)
                 {
                     print("down");
+                    mainUI.Remover();
                     at.RemoveAt(0);
-                    waterDepth -= 0.5f;
                 }
                 else if (Input.GetKeyDown(KeyCode.LeftArrow) && at[0] == ARROW_TYPE.LEFT)
                 {
                     print("left");
+                    mainUI.Remover();
                     at.RemoveAt(0);
-                    waterDepth -= 0.5f;
                 }
                 else if (Input.GetKeyDown(KeyCode.RightArrow) && at[0] == ARROW_TYPE.RIGHT)
                 {
                     print("right");
+                    mainUI.Remover();
                     at.RemoveAt(0);
-                    waterDepth -= 0.5f;
                 }
                 else if ((Input.GetKeyDown(KeyCode.UpArrow) && at[0] != ARROW_TYPE.UP) ||
                         (Input.GetKeyDown(KeyCode.DownArrow) && at[0] != ARROW_TYPE.DOWN) ||
@@ -100,6 +107,9 @@ public class FishingManager : ActionBase
             yield return null;
         }
 
+        at.Clear();
+
         OnFishingEndTrigger?.Invoke(windowIndex, className);
+        OnFishingEnder?.Invoke();
     }
 }
