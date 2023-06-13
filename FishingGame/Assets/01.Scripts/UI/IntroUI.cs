@@ -21,11 +21,15 @@ public class IntroUI : MonoBehaviour
     private VisualElement _optionWindow;
     private VisualElement _quitWindow;
 
+    private VisualElement _fadeImage;
+
     [SerializeField] private string _startClassName;
+    [SerializeField] private ParticleSystem _fade;
 
     private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
+        
     }
 
     private void OnEnable()
@@ -40,12 +44,22 @@ public class IntroUI : MonoBehaviour
         _optionQuitBtn = _root.Q("OptionQuitBtn");
 
         _titleImage = _root.Q("TitleImage");
+
+        _fadeImage = _root.Q("FadeImage");
+    }
+
+    void LoadScene(){
+        _fade.Play();
+        StartCoroutine(DelayCoroutine(.2f, ()=>{
+            StartCoroutine(DelayCoroutine(.2f, ()=>{
+
+            }));
+        }));
     }
 
     void Start()
     {
         _startBtn.RegisterCallback<ClickEvent>(e=>{
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex +1);
         });
         _optionBtn.RegisterCallback<ClickEvent>(e=>{
             _optionWindow.AddToClassList(_startClassName);//옵션 윈도우 켜기
