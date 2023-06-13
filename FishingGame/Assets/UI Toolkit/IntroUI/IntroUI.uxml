@@ -7,7 +7,7 @@
             <ui:Button text="Button" display-tooltip-when-elided="true" name="StartBtn" class="btn" />
         </ui:VisualElement>
         <ui:VisualElement name="TitleImage" class="title" style="position: absolute; left: 0; width: 1000px; height: 500px;">
-            <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Packages/com.unity.cinemachine/Editor/EditorResources/Cinemachine_header.tif?fileID=2800000&amp;guid=372fe04232d5ed94d8d71524616c1543&amp;type=3#Cinemachine_header&apos;); -unity-background-scale-mode: scale-to-fit; height: 100%;" />
+            <ui:VisualElement name="Image" style="background-image: url(&apos;project://database/Assets/03.Assets/Untitled-1.png?fileID=2800000&amp;guid=7b8b72837471ca6408ed7522960f7bba&amp;type=3#Untitled-1&apos;); -unity-background-scale-mode: scale-to-fit; height: 100%;" />
         </ui:VisualElement>
         <ui:VisualElement name="OptionWindow" class="option" style="flex-direction: row-reverse; align-items: flex-start;">
             <ui:Button text="Button" display-tooltip-when-elided="true" name="OptionQuitBtn" />

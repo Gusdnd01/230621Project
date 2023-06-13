@@ -7,9 +7,12 @@ using Random = UnityEngine.Random;
 
 public class GameManager : MonoSingleton<GameManager>
 {
+    public Transform playerMovement;
+
     private void Awake() {
         Init();
     }
+
     private void Init(){
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

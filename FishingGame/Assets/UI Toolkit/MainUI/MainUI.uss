@@ -4,6 +4,10 @@
     bottom: -47%;
     position: absolute;
     transition-duration: 0.5s;
+    border-top-left-radius: 31px;
+    border-bottom-left-radius: 31px;
+    border-top-right-radius: 31px;
+    border-bottom-right-radius: 31px;
 }
 
 .fishingPanel.on {
@@ -11,13 +15,14 @@
 }
 
 .fishingable {
-    background-image: url('project://database/Packages/com.unity.timeline/Editor/StyleSheets/Images/Shared/TimelineWarning.png?fileID=2800000&guid=1732e542f535d374bbfa7565fc78414e&type=3#TimelineWarning');
+    background-image: url('project://database/Assets/03.Assets/SimpleKeys/Classic/Light/Single%20PNGs/F.png?fileID=2800000&guid=7a63429533ab0204e841cb85f8753d96&type=3#F');
     position: absolute;
     width: 200px;
     height: 200px;
     left: 45%;
     top: 105%;
     transition-duration: 0.2s;
+    -unity-background-scale-mode: stretch-to-fill;
 }
 
 .fishingable.on {

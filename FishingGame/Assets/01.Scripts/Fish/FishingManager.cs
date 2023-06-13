@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Events;
 using Core;
 using System;
@@ -24,6 +25,9 @@ public class FishingManager : ActionBase
 
     [SerializeField] private float waterDepth;
 
+    [SerializeField]
+    Slider slider;
+
     public UnityEvent<int, string> OnFishingStartTrigger = null;
     public UnityEvent<int> OnFishingSetter = null;
     public UnityEvent<int, string> OnFishingEndTrigger = null;
@@ -35,21 +39,26 @@ public class FishingManager : ActionBase
     [SerializeField]
     private MainUI mainUI;
 
+    private FISH_TYPE fs;
+    [SerializeField] private Inventory _inventory;
+
     private void Awake()
     {
         Instance = this;
+        
     }
 
     public void Fishing()
     {
         waterDepth = Random.Range(20f, 40f);
-        StartCoroutine(StartFishing(time));
+        StartCoroutine(StartFishing(time, waterDepth));
     }
 
-    private IEnumerator StartFishing(float time)
+    private IEnumerator StartFishing(float time, float depth)
     {
         OnFishingStartTrigger?.Invoke(windowIndex, className);
         int randNum = 0;
+        float percent = Random.Range(0f, 100f);
         for (int i = 0; i < cnt; ++i)
         {
             randNum = Random.Range(0, 4);
@@ -57,11 +66,22 @@ public class FishingManager : ActionBase
             OnFishingSetter?.Invoke(randNum);
         }
 
+        if(percent >= 0f && percent < 10f){
+            fs = FISH_TYPE.Shark;
+        }
+        else if(percent >= 10f && percent < 50f){
+            fs = FISH_TYPE.Salmon;
+        }
+        else{
+            fs = FISH_TYPE.Mackerel;
+        }
+
         while (waterDepth > 0)
         {
+            waterDepth = Mathf.Clamp(waterDepth,0, depth);
             if (at.Count <= 0)
             {
-                waterDepth -= 2f;
+                waterDepth -= 5f;
                 for (int i = 0; i < cnt; ++i)
                 {
                     randNum = Random.Range(0, 4);
@@ -108,6 +128,8 @@ public class FishingManager : ActionBase
         }
 
         at.Clear();
+
+        _inventory.Adder(fs);
 
         OnFishingEndTrigger?.Invoke(windowIndex, className);
         OnFishingEnder?.Invoke();

@@ -16,9 +16,12 @@ public class FishingRoutineController : ActionBase
     public float fishingPercent = 5f;
     public float waitFishingRoutine = 5f;
 
+
     private bool _fishingable;
     private bool _isFishing = false;
     private bool _isActiveGame = true;
+
+    public PlayerMovement _playerMovement;
 
     public void RandomFishing(){
         float percent = Random.Range(0f, 100f);
@@ -39,7 +42,7 @@ public class FishingRoutineController : ActionBase
 
     private IEnumerator FishingRoutine(){
         while(true){
-            yield return new WaitUntil(()=>_isActiveGame == true && _isFishing == false);
+            yield return new WaitUntil(()=>_isActiveGame == true && _isFishing == false && _playerMovement.isMoving);
             RandomFishing();
 
             yield return new WaitForSeconds(waitFishingRoutine);

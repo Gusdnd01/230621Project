@@ -15,4 +15,13 @@ namespace Core{
         public bool isCorrecting;
         public float percent;
     }
+
+    public enum FISH_TYPE{
+        Mackerel = 0,
+        Infected_Mackerel,
+        Salmon,
+        Infected_Salmon,
+        Shark,
+        Infected_Shark,
+    }
 };
