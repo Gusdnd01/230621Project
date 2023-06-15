@@ -1,9 +1,0 @@
-<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/UI%20Toolkit/MainUI/MainUI.uss?fileID=7433441132597879392&amp;guid=485b74a9461870248bef77f2b2fc3c27&amp;type=3#MainUI" />
-    <ui:VisualElement name="Root" style="flex-grow: 1;">
-        <ui:VisualElement name="TimeCircle" />
-        <ui:VisualElement name="Engine" />
-        <ui:VisualElement name="FishingWindow" class="fishingPanel" style="height: 404px; background-color: rgb(46, 0, 0); flex-direction: row; align-items: center; justify-content: center;" />
-        <ui:VisualElement name="Fishingable" class="fishingable" />
-    </ui:VisualElement>
-</ui:UXML>
