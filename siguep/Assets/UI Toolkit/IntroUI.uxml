@@ -1,0 +1,17 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/IntroUI.uss?fileID=7433441132597879392&amp;guid=73c3ac0625c047145b4e87571390e55b&amp;type=3#IntroUI" />
+    <ui:VisualElement name="Root" class="root" style="flex-basis: 100%; flex-grow: 1; flex-direction: row-reverse;">
+        <ui:VisualElement name="ButtonParent" style="flex-direction: column-reverse; align-items: flex-end; justify-content: flex-start; height: 100%; width: 10%; top: -109px;">
+            <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitBtn" class="btn" style="width: 750px;" />
+            <ui:Button text="Option" display-tooltip-when-elided="true" name="OptionBtn" class="btn" style="width: 850px;" />
+            <ui:Button text="Start" display-tooltip-when-elided="true" name="StartBtn" class="btn" style="width: 950px;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="TitleImage" class="title" style="position: absolute; left: 0; width: 1000px; height: 500px;">
+            <ui:VisualElement name="Image" style="background-image: none; -unity-background-scale-mode: scale-to-fit; height: 100%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="OptionWindow" class="option" style="flex-direction: row-reverse; align-items: flex-start;">
+            <ui:Button text="Button" display-tooltip-when-elided="true" name="OptionQuitBtn" />
+        </ui:VisualElement>
+        <ui:VisualElement name="fadeImage" class="fade" />
+    </ui:VisualElement>
+</ui:UXML>
