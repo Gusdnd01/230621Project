@@ -45,6 +45,8 @@
 
 .tab.on {
     background-color: rgb(0, 0, 0);
+    background-image: url('project://database/Assets/UI%20pack/Button/Green%20gradient.png?fileID=2800000&guid=040be0e474e09894ca320b08d9462cc8&type=3#Green gradient');
+    -unity-background-scale-mode: scale-to-fit;
 }
 
 #ContentBox > #Content {
@@ -58,11 +60,23 @@
 
 .tab_content {
     flex-grow: 1;
-    background-image: none;
+    background-image: url('project://database/Assets/SpeedTutor%20-%20Tutorial%20Scene%20-%20FREE/Textures/Gray_Tileable_Demo_Texture.png?fileID=2800000&guid=3222a9c550eb588429237a20c31d4a91&type=3#Gray_Tileable_Demo_Texture');
     -unity-background-scale-mode: scale-and-crop;
     flex-basis: 33%;
     flex-direction: column-reverse;
     align-items: flex-end;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-left-width: 14px;
+    border-right-width: 14px;
+    border-top-width: 14px;
+    border-bottom-width: 14px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
 }
 
 .sell {
@@ -105,6 +119,9 @@
     margin-top: 50px;
     margin-bottom: 50px;
     transition-duration: 0.2s;
+    background-image: url('project://database/Assets/AmplifyShaderEditor/Plugins/EditorResources/UI/Nodes/BlueNormalHeader.png?fileID=2800000&guid=bd910a1d744309b499b59062db7891ab&type=3#BlueNormalHeader');
+    -unity-background-scale-mode: stretch-to-fill;
+    background-color: rgb(0, 0, 0);
 }
 
 .content-btn:hover {
@@ -133,4 +150,16 @@
     height: 100%;
     opacity: 1;
     visibility: visible;
+}
+
+.tab-label {
+    width: 100%;
+    height: 100%;
+    font-size: 30px;
+    -unity-text-align: upper-left;
+    -unity-font: url('project://database/Assets/03.Font/NanumSquareRoundB.ttf?fileID=12800000&guid=a4ccf9e21b45f4d4794186c8ab0e2a4e&type=3#NanumSquareRoundB');
+    -unity-font-style: bold;
+    color: rgb(0, 0, 0);
+    padding-left: 29px;
+    padding-top: 11px;
 }

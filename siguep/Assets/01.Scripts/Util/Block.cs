@@ -11,6 +11,8 @@ public class Block : MonoBehaviour, IDamageable
     MeshRenderer ms;
     Material mat;
 
+    public List<AudioClip> clip = new List<AudioClip>();
+
     private PlayerController _controller;
 
     private ParticleSystem _explosion;
@@ -47,11 +49,13 @@ public class Block : MonoBehaviour, IDamageable
         if (_controller.ElementCorrect(elt))
         {
             BreakABlock();
+            SoundManager.Instance.SFXPlay(clip[0]);
 
             _controller.PHit(-10, false);
         }
         else
         {
+            SoundManager.Instance.SFXPlay(clip[1]);
             _controller.PHit(10, true);
         }
     }
@@ -61,7 +65,6 @@ public class Block : MonoBehaviour, IDamageable
         GameManager.Instance.playerTrm.GetComponent<PlayerController>().timer = 0f;
         //이때 블록을 부술거임
         Instantiate(Resources.Load<GameObject>(resourceName), transform.position, Quaternion.identity);
-
         if (_mi != null)
         {
             _mi.mainCubes.Remove(gameObject);

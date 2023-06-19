@@ -26,6 +26,8 @@ public class TabBar : MonoBehaviour
     private VisualElement _fadeImage;
 
     public string _startClassName = "start";
+    public AudioClip _audioClip;
+
 
     private void Awake()
     {
@@ -55,6 +57,13 @@ public class TabBar : MonoBehaviour
     }
 
     public List<Button> soundBtn;
+
+    private IEnumerator Start()
+    {
+        yield return new WaitForSeconds(.5f);
+        SoundManager.Instance.BGMPlay(_audioClip);
+        _fadeImage.RemoveFromClassList(_startClassName);
+    }
 
     private void OnEnable()
     {
@@ -90,6 +99,8 @@ public class TabBar : MonoBehaviour
         _rootUI.Q<Button>("s2Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage2"));
         _rootUI.Q<Button>("s3Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage3"));
         _rootUI.Q<Button>("ComingSoonBtn").RegisterCallback<ClickEvent>(evt => LoadScene("Intro"));
+
+        _rootUI.Q("Tutotab").AddToClassList("on");
     }
 
     private void Off(List<VisualElement> list)

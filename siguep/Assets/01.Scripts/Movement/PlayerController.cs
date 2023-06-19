@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System;
 using Core;
+using UnityEngine.UI;
 
 using Random = UnityEngine.Random;
 public class PlayerController : MonoBehaviour
@@ -12,7 +13,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _maxHP;
 
+    [SerializeField] private Slider _slider;
+
     [SerializeField] private float _hpMultiplier = 1.0f;
+    [SerializeField] private float _damageMultiplier = 1.0f;
 
     private Vector3 moveDir;
     private CharacterController _controller;
@@ -67,6 +71,8 @@ public class PlayerController : MonoBehaviour
         if (_isDead || !GameManager.Instance.isMoving) return;
         _curHP -= Time.deltaTime * _hpMultiplier;
 
+        _slider.value = _curHP/_maxHP;
+
         if( _curHP <= 0)
         {
             OnDead();
@@ -118,7 +124,7 @@ public class PlayerController : MonoBehaviour
     public void OnDead()
     {
         _isDead = true;
-
+        FindAnyObjectByType<Stage1>().Dead();
         _animator.SetDie();
     }
 
@@ -193,7 +199,7 @@ public class PlayerController : MonoBehaviour
 
     public void PHit(int damage, bool hitAnimation)
     {
-        _curHP -= damage;
+        _curHP -= damage * _damageMultiplier;
         if (hitAnimation)
         {
             _animator.SetHitTrigger();

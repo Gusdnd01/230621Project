@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Rendering.Universal;
 
 using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
 
 public class IntroUI : MonoBehaviour
 {
@@ -21,10 +23,15 @@ public class IntroUI : MonoBehaviour
     private VisualElement _optionWindow;
     private VisualElement _quitWindow;
 
+    private DropdownField _dropdown;
+    private Slider _slider;
+    private Toggle _toggle;
+
     private VisualElement _fadeImage;
-
+    [SerializeField] private AudioClip _audioClip;
     [SerializeField] private string _startClassName;
-
+    [SerializeField] private List<string> _assetName = new List<string>();  
+    [SerializeField] private List<UniversalRenderPipelineAsset> assets = new List<UniversalRenderPipelineAsset>();
     private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
@@ -48,6 +55,10 @@ public class IntroUI : MonoBehaviour
         _titleImage = _root.Q("TitleImage");
 
         _fadeImage = _root.Q("fadeImage");
+
+        _dropdown = _root.Q<DropdownField>("Dropdown");
+        _slider = _root.Q<Slider>("slider");
+        _toggle = _root.Q<Toggle>("toggle");
     }
 
     void LoadScene(string sceneName){
@@ -61,7 +72,9 @@ public class IntroUI : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(1f); 
+        yield return new WaitForSeconds(1f);
+        SoundManager.Instance.BGMPlay(_audioClip);
+        _fadeImage.RemoveFromClassList(_startClassName);
         _startBtn.RegisterCallback<ClickEvent>(e=>{
             _startBtn.RemoveFromClassList(_startClassName);
             _optionBtn.RemoveFromClassList(_startClassName);
@@ -79,7 +92,12 @@ public class IntroUI : MonoBehaviour
         _optionQuitBtn.RegisterCallback<ClickEvent>(e=>{
             _optionWindow.RemoveFromClassList(_startClassName);
         });
-
+        _dropdown.choices = _assetName;
+        _dropdown.value = _assetName[0];
+        _dropdown.RegisterValueChangedCallback(e => {
+            GraphicsSettings.renderPipelineAsset = assets[_dropdown.index];
+            print(GraphicsSettings.renderPipelineAsset.name);
+        });
         StartCoroutine(DelayCoroutine(0.5f, () =>
         {
             _startBtn.AddToClassList(_startClassName);

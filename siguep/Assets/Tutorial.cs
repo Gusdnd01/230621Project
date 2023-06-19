@@ -21,17 +21,15 @@ public class Tutorial : MonoBehaviour
 
     public bool[] allElement = { false, false, false };
 
+    public AudioClip _audioClip;
+
     private int index = 0;
     public Transform _initTrm;
     private IEnumerator Start()
     {
-        FindAnyObjectByType<MainUI>().TrunOn();
         yield return new WaitForSeconds(1.0f);
-        StartCoroutine(tutorialTextStart());
-    }
-
-    private IEnumerator tutorialTextStart()
-    {
+        FindAnyObjectByType<MainUI>().TrunOn();
+        SoundManager.Instance.BGMPlay(_audioClip);
         while (true)
         {
             yield return StartCoroutine(Desa());
@@ -49,15 +47,11 @@ public class Tutorial : MonoBehaviour
         _tutorialTextTrigger?.Invoke(_textList[index]);
         switch (index)
         {
-            case 3:
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S));
-                yield return new WaitForSeconds(2.0f);
-                break;
-            case 4:
+            case 6:
                 yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftShift));
                 yield return new WaitForSeconds(2.0f);
                 break;
-            case 5:
+            case 7:
                 _playerTrm.GetComponent<PlayerController>().EndDash();
                 _playerTrm.GetComponent<CharacterController>().transform.position = new Vector3(0, 0, 0);
 

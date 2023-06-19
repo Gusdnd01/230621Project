@@ -3,32 +3,46 @@
     <ui:VisualElement name="Container">
         <ui:VisualElement name="TabBar" style="flex-grow: 1; flex-basis: 100%;">
             <ui:VisualElement name="TabBox">
-                <ui:VisualElement class="tab" style="background-image: none;" />
-                <ui:VisualElement class="tab" style="background-image: none;" />
-                <ui:VisualElement class="tab" style="background-image: none;" />
-                <ui:VisualElement class="tab" style="background-image: none;" />
-                <ui:VisualElement class="tab" style="background-image: none;" />
+                <ui:VisualElement name="Tutotab" class="tab" style="background-image: none;">
+                    <ui:Label text="Tutorial" display-tooltip-when-elided="true" enable-rich-text="false" class="tab-label" style="display: flex; visibility: visible;" />
+                </ui:VisualElement>
+                <ui:VisualElement class="tab" style="background-image: none;">
+                    <ui:Label text="Stage 1" display-tooltip-when-elided="true" class="tab-label" />
+                </ui:VisualElement>
+                <ui:VisualElement class="tab" style="background-image: none;">
+                    <ui:Label text="Stage 2" display-tooltip-when-elided="true" class="tab-label" />
+                </ui:VisualElement>
+                <ui:VisualElement class="tab" style="background-image: none;">
+                    <ui:Label text="Stage 3" display-tooltip-when-elided="true" class="tab-label" />
+                </ui:VisualElement>
+                <ui:VisualElement class="tab" style="background-image: none;">
+                    <ui:Label text="Quit" display-tooltip-when-elided="true" class="tab-label" />
+                </ui:VisualElement>
             </ui:VisualElement>
             <ui:VisualElement name="ContentBox">
                 <ui:VisualElement name="Content" style="width: 500%;">
                     <ui:VisualElement name="Tutorial" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                        <ui:VisualElement style="position: absolute; width: 1280px; height: 720px; background-image: url(&apos;project://database/Assets/05.FX/Tex/Tutorial.png?fileID=2800000&amp;guid=14fbaeab497346f4ca9570ae90bcb09c&amp;type=3#Tutorial&apos;); left: 954px; translate: -50% -50%; top: 485px; border-left-width: 11px; border-right-width: 11px; border-top-width: 11px; border-bottom-width: 11px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;" />
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="TutoBtn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="Stage1" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                    <ui:VisualElement name="Stage1" class="tab_content" style="background-color: rgb(0, 0, 0); background-image: url(&apos;project://database/Assets/UI%20pack/Button/Green%20gradient.png?fileID=2800000&amp;guid=040be0e474e09894ca320b08d9462cc8&amp;type=3#Green gradient&apos;);">
+                        <ui:VisualElement style="position: absolute; width: 1280px; height: 720px; background-image: url(&apos;project://database/Assets/05.FX/Tex/asfrmkmkrmkb.png?fileID=2800000&amp;guid=ef89b394b32fbb941b5f5ffe67e7353c&amp;type=3#asfrmkmkrmkb&apos;); left: 1022px; translate: -50% -50%; top: 497px; border-left-width: 11px; border-right-width: 11px; border-top-width: 11px; border-bottom-width: 11px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;" />
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="s1Btn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="Stage2" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                    <ui:VisualElement name="Stage2" class="tab_content" style="background-color: rgb(0, 0, 0); background-image: url(&apos;project://database/Assets/UI%20pack/Button/Orange%20gradient.png?fileID=2800000&amp;guid=1258ac417dd158a48b05eeedb739c469&amp;type=3#Orange gradient&apos;); -unity-background-scale-mode: scale-and-crop;">
+                        <ui:VisualElement style="position: absolute; width: 1280px; height: 720px; background-image: url(&apos;project://database/Assets/05.FX/Tex/oidjojit.png?fileID=2800000&amp;guid=105205ff37699c740ac7d01d8ef6eaf3&amp;type=3#oidjojit&apos;); left: 1022px; translate: -50% -50%; top: 497px; border-left-width: 11px; border-right-width: 11px; border-top-width: 11px; border-bottom-width: 11px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;" />
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="s2Btn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="Stage3" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                    <ui:VisualElement name="Stage3" class="tab_content" style="background-color: rgb(0, 0, 0); background-image: url(&apos;project://database/Assets/UI%20pack/Button/Blue%20gradient.png?fileID=2800000&amp;guid=60cfd84ae231a4943b3f0f6cf0dcf409&amp;type=3#Blue gradient&apos;);">
+                        <ui:VisualElement style="position: absolute; width: 1280px; height: 720px; background-image: url(&apos;project://database/Assets/05.FX/Tex/jigrmirmkbr.png?fileID=2800000&amp;guid=d5061258fe6f525438e02c7cab499a39&amp;type=3#jigrmirmkbr&apos;); left: 1022px; translate: -50% -50%; top: 497px; border-left-width: 11px; border-right-width: 11px; border-top-width: 11px; border-bottom-width: 11px; border-left-color: rgb(255, 255, 255); border-right-color: rgb(255, 255, 255); border-top-color: rgb(255, 255, 255); border-bottom-color: rgb(255, 255, 255); border-top-left-radius: 4px; border-bottom-left-radius: 4px; border-top-right-radius: 4px; border-bottom-right-radius: 4px;" />
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="s3Btn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="ComingSoon" class="tab_content" style="background-color: rgb(0, 0, 0);">
-                        <ui:Button text="Button" display-tooltip-when-elided="true" name="ComingSoonBtn" enable-rich-text="true" class="content-btn" style="visibility: visible; opacity: 0.46;" />
+                    <ui:VisualElement name="ComingSoon" class="tab_content" style="background-color: rgb(0, 0, 0); background-image: url(&apos;project://database/Assets/UI%20pack/Button/Red%20gradient.png?fileID=2800000&amp;guid=28c51f93b6260224c867f45f411a0e85&amp;type=3#Red gradient&apos;);">
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="ComingSoonBtn" enable-rich-text="true" class="content-btn" style="visibility: visible; opacity: 1;" />
                     </ui:VisualElement>
                 </ui:VisualElement>
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="fadeImage" class="fade" />
+        <ui:VisualElement name="fadeImage" class="fade on" />
     </ui:VisualElement>
 </ui:UXML>

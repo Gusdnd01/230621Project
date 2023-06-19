@@ -10,26 +10,48 @@ public class Stage1 : MonoBehaviour
     public UnityEvent _textReset = null;
 
     public List<GameObject> _cubes = new List<GameObject>();
+    public List<GameObject> _notes = new List<GameObject>();
+    public List<GameObject> _mulnocu = new List<GameObject>();
     public List<GameObject> mainCubes = new List<GameObject>();
+
+    public AudioClip mainNote;
 
     public int cubeCount;
 
+    [SerializeField] private int _stageIndex;
+
+
     public Transform _initPosition;
+
+    private Transform _curveTrm;
 
     private IEnumerator Start()
     {
+        SoundManager.Instance.BGMPlay(mainNote);
+        yield return new WaitForSeconds(1.0f);
         FindAnyObjectByType<MainUI>().TrunOn();
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(lastMoment());
+    }
+
+    public void Dead()
+    {
+        StartCoroutine(OnDeadCoroutine());
+    }
+    private IEnumerator OnDeadCoroutine()
+    {
+        _startTextTrigger?.Invoke("í…ŒìŠ¤íŠ¸ë¥¼ ì‹¤íŒ¨í•˜ì˜€ìŠµë‹ˆë‹¤.");
+        yield return new WaitForSeconds(1.0f);
+        FindObjectOfType<MainUI>().Scenemove();
     }
 
 
     private IEnumerator lastMoment()
     {
         StartGame();
-        _startTextTrigger?.Invoke("Å×½ºÆ®¸¦ ½ÃÀÛÇÕ´Ï´Ù.");
+        _startTextTrigger?.Invoke("í…ŒìŠ¤íŠ¸ê°€ ì‹œì‘ë˜ì—ˆìŠµë‹ˆë‹¤.");
         yield return new WaitForSeconds(2.0f);
-        _startTextTrigger?.Invoke("Á¦ÇÑ½Ã°£ ¾È¿¡ ºí·ÏÀ» ¸ğµÎ ºÎ¼ö¼¼¿ä!");
+        _startTextTrigger?.Invoke("ì œí•œì‹œê°„ ì•ˆì— ë¸”ë¡ì„ ëª¨ë‘ ë¶€ìˆ˜ì„¸ìš”!");
         yield return new WaitForSeconds(3.0f);
         _textReset?.Invoke();
         yield return new WaitForSeconds(1.0f);
@@ -38,10 +60,45 @@ public class Stage1 : MonoBehaviour
 
     private void StartGame()
     {
-        for (int i = 0; i < _cubes.Count; ++i)
+        switch (_stageIndex)
         {
-            GameObject obj = Instantiate(_cubes[i], _initPosition.position + new Vector3(0,2.35f, 15f * i), Quaternion.identity);
-            mainCubes.Add(obj);
+            case 1:
+                for (int i = 0; i < _cubes.Count; ++i)
+                {
+                    GameObject obj = Instantiate(_cubes[i], _initPosition.position + new Vector3(0, 2.35f, 15f * i), Quaternion.identity);
+                    mainCubes.Add(obj);
+                }
+                break;
+            case 2:
+                int randNum = 0;
+                for (int i = 0; i < 15; ++i)
+                {
+                    randNum = Random.Range(0, 8);
+                    GameObject obj = Instantiate(_mulnocu[randNum], _initPosition.position + new Vector3(0, 2.35f, 30f * i), Quaternion.identity);
+                    if(obj.name[0] == 'N')
+                    {
+                        for (int j = 0; j < obj.transform.childCount; ++j)
+                        {
+                            mainCubes.Add(obj.transform.GetChild(j).gameObject);
+                        }
+                    }
+                    else
+                    {
+                        mainCubes.Add(obj);
+                    }
+                }
+                break;
+            case 3:
+                for (int i = 0; i < 15; ++i)
+                {
+                    randNum = Random.Range(0, 5);
+                    GameObject obj = Instantiate(_notes[randNum], _initPosition.position + new Vector3(0, 2.35f, 35f * i), Quaternion.identity);
+                    for (int j = 0; j < obj.transform.childCount; ++j)
+                    {
+                        mainCubes.Add(obj.transform.GetChild(j).gameObject);
+                    }
+                }
+                break;
         }
     }
 
@@ -52,7 +109,7 @@ public class Stage1 : MonoBehaviour
 
     private IEnumerator ClearCycle()
     {
-        _startTextTrigger?.Invoke("Å×½ºÆ®¸¦ ¿Ï·áÇÏ¿´½À´Ï´Ù.");
+        _startTextTrigger?.Invoke("í…ŒìŠ¤íŠ¸ë¥¼ ì™„ë£Œí•˜ì˜€ìŠµë‹ˆë‹¤.");
         yield return new WaitForSeconds(1.0f);
         FindObjectOfType<MainUI>().Scenemove();
     }
