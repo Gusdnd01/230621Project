@@ -13,8 +13,8 @@ public class PlayerColorChanger : MonoBehaviour
         renderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
-    public void ColorChange()
+    public void ColorChange(int index)
     {
-        renderer.material = mats[Random.Range(0, 3)];   
+        renderer.material = mats[index];   
     }
 }

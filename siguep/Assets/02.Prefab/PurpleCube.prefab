@@ -110,4 +110,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78628d48684dbf94ba8e51fedb1be5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _explosion: {fileID: 0}
+  resourceName: FX_Explosion_Rubble_P

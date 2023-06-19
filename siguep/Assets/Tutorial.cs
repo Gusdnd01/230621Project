@@ -16,13 +16,13 @@ public class Tutorial : MonoBehaviour
 
     public List<GameObject> _cubes = new List<GameObject>();
 
-    private int index = 0;
+    public bool[] allElement = { false, false, false };
 
+    private int index = 0;
+    public Transform _initTrm;
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(1.0f);
-        _tutorialTextTrigger?.Invoke(_textList[index++]);
-        _spaceTrigger?.Invoke();
         StartCoroutine(tutorialTextStart());
     }
 
@@ -31,7 +31,7 @@ public class Tutorial : MonoBehaviour
         while (true)
         {
             yield return StartCoroutine(Desa());
-            if(index >= _textList.Count)
+            if (index >= _textList.Count)
             {
                 break;
             }
@@ -45,37 +45,39 @@ public class Tutorial : MonoBehaviour
         _tutorialTextTrigger?.Invoke(_textList[index]);
         switch (index)
         {
-            case 1:
-                yield return new WaitUntil(() => CameraManager.instance.cameraMove);
-                break;
-            case 2:
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.W)|| Input.GetKeyDown(KeyCode.S));
-                break;
             case 3:
-                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftShift));
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S));
+                yield return new WaitForSeconds(2.0f);
                 break;
             case 4:
-                Instantiate(_cubes[0], new Vector3(0,0,5), Quaternion.identity);
-                Instantiate(_cubes[1], new Vector3(5,0,5), Quaternion.identity);
-                Instantiate(_cubes[2], new Vector3(10,0,1), Quaternion.identity);
                 yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftShift));
+                yield return new WaitForSeconds(2.0f);
+                break;
+            case 5:
+                int randNum = 0;
+                for (int i = 0; i < 15; ++i)
+                {
+                    randNum = Random.Range(0, 3);
+                    Instantiate(_cubes[randNum], _initTrm.position + new Vector3(0, 0, 15 * i), Quaternion.identity);
+                }
+                GameManager.Instance.playerTrm.GetComponent<PlayerController>().EndDash();
+                GameManager.Instance.playerTrm.position = new Vector3(0, 0, 0);
+                yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftShift));
+                yield return new WaitForSeconds(3.0f);
                 break;
             default:
                 _spaceTrigger?.Invoke();
                 yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Space));
+                yield return new WaitForSeconds(1.0f);
                 break;
         }
-        yield return new WaitForSeconds(_textList[index].Length * .1f);
         index++;
     }
 
     private IEnumerator lastMoment()
     {
-        yield return new WaitForSeconds(3.0f);
-        yield return new WaitUntil(() => CameraManager.instance.cameraMove);
         _tutorialTextTrigger?.Invoke("3초 후 메인 화면으로 넘어갑니다.");
-        yield return new WaitForSeconds(1.0f);
-        SaveSystem.instance.Data.tutorial = true;
-        SaveSystem.instance.Save();
+        yield return new WaitForSeconds(3.0f);
+        _tutorialEndTrigger?.Invoke();
     }
 }

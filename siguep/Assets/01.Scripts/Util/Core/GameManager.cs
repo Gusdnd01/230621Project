@@ -10,6 +10,10 @@ public class GameManager : MonoBehaviour
     public ParticleSystem _dashFX;
     private bool _isDash;
 
+    public bool isMoving = true;
+
+    public int score = 0;
+
     private void Awake()
     {
         Instance = this;

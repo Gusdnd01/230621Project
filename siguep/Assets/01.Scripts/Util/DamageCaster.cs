@@ -54,6 +54,12 @@ public class DamageCaster : MonoBehaviour
                         break;
                 }
             }
+            else
+            {
+                _controller.Play("Hit");
+                CameraManager.instance.PCamShake(5, 1, .5f);
+                GetComponent<PlayerController>().PHit(0, true);
+            }
         }
     }
 

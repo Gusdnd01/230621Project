@@ -21,9 +21,9 @@ public class PlayerAnimator : MonoBehaviour
         _animator.SetBool(_runHash, value);
     }
 
-    public void SetDie(bool value)
+    public void SetDie()
     {
-        _animator.SetBool(_dieHash,value);
+        _animator.SetTrigger(_dieHash);
     }
 
     public void SetWalk(bool value)

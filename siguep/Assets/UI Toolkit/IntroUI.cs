@@ -28,7 +28,10 @@ public class IntroUI : MonoBehaviour
     private void Awake()
     {
         _uiDocument = GetComponent<UIDocument>();
-        
+
+        UnityEngine.Cursor.lockState = CursorLockMode.Confined;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
     }
 
     private void OnEnable()
@@ -64,7 +67,7 @@ public class IntroUI : MonoBehaviour
             _optionBtn.RemoveFromClassList(_startClassName);
             _quitBtn.RemoveFromClassList(_startClassName);
             _titleImage.RemoveFromClassList(_startClassName);
-            LoadScene(!SaveSystem.instance.Data.tutorial ? "Tutorial" : "StageSelect");
+            LoadScene("StageSelect");
         });
         _optionBtn.RegisterCallback<ClickEvent>(e=>{
             _optionWindow.AddToClassList(_startClassName);//옵션 윈도우 켜기

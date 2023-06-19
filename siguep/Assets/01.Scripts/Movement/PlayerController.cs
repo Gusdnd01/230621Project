@@ -10,43 +10,87 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float _speed;
     [SerializeField] private float _dashSpeed;
+    [SerializeField] private float _maxHP;
+
+    [SerializeField] private float _hpMultiplier = 1.0f;
+
     private Vector3 moveDir;
     private CharacterController _controller;
     private PlayerAnimator _animator;
     private PlayerFXController _fxController;
+    private PlayerColorChanger _colorChanger;
+
+    private float _curHP;
 
     private bool _isDash = false;
     private bool _isBerserk = false;
+    private bool _isDead = false;
+
     private Element _element;
 
     private float _dashCool = 3.0f;
 
     private int _dashCount = 3; 
 
-    [SerializeField]
-    private float _timer = 0;
+    public float timer = 0;
 
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
         _animator = GetComponent<PlayerAnimator>();
         _fxController = GetComponent<PlayerFXController>();
+        _colorChanger = GetComponent<PlayerColorChanger>();
         Init();
     }
 
     private void Init()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
         _element = Element.FIRE;
         _isDash = false;
         _isBerserk = false;
+
+        _curHP = _maxHP;
     }
+
+    int elementIndex = 0;
 
     private void Update()
     {
+        if (_isDead || !GameManager.Instance.isMoving) return;
+        _curHP -= Time.deltaTime * _hpMultiplier;
+
+        if( _curHP <= 0)
+        {
+            OnDead();
+        }
+
         DashTrigger();
         CalcDashTimer();
         InputDir(ref moveDir);
-        if (_isDash) moveDir.z = _dashSpeed;
+        if (_isDash)
+        {
+            moveDir.z = _dashSpeed;
+            if (Input.GetKeyDown(KeyCode.Z))
+            {
+                _element = Element.FIRE;
+                _colorChanger.ColorChange((int)_element);
+            }
+            else if (Input.GetKeyDown(KeyCode.X))
+            {
+                _element = Element.POISON;
+
+                _colorChanger.ColorChange((int)_element);
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                _element = Element.FOREST;
+
+                _colorChanger.ColorChange((int)_element);
+            }
+        }
         Movement(transform.forward * moveDir.z);
     }
 
@@ -64,6 +108,13 @@ public class PlayerController : MonoBehaviour
             _animator.SetRun(false);
             _animator.SetWalk(false);
         }
+    }
+
+    public void OnDead()
+    {
+        _isDead = true;
+
+        _animator.SetDie();
     }
 
     //버서크, 그냥 광폭화 효과임
@@ -89,7 +140,7 @@ public class PlayerController : MonoBehaviour
     public void EndDash()
     {
         _isDash = false ;
-        _timer = 0;
+        timer = 0;
         GameManager.Instance.SetDash(false);
         _animator.SetRun(false);
     }
@@ -98,12 +149,12 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDash)
         {
-            _timer += Time.deltaTime;
-            if (_timer > 3f)
+            timer += Time.deltaTime;
+            if (timer > 3f)
             {
                 _animator.SetRun(false);
                 _isDash = false;
-                _timer = 0;
+                timer = 0;
             }
         }
     }
@@ -135,9 +186,13 @@ public class PlayerController : MonoBehaviour
         _controller.Move(input * Time.deltaTime * _speed);
     }
 
-    public void PHit()
+    public void PHit(int damage, bool hitAnimation)
     {
-        _animator.SetHitTrigger();
-        EndDash();
+        _curHP -= damage;
+        if (hitAnimation)
+        {
+            _animator.SetHitTrigger();
+            EndDash();
+        }
     }
 }
