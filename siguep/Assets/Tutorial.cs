@@ -12,6 +12,9 @@ public class Tutorial : MonoBehaviour
     public UnityEvent _textReset = null;
     public UnityEvent _tutorialEndTrigger = null;
 
+    public Transform _playerTrm;
+
+
     public List<string> _textList = new List<string>();
 
     public List<GameObject> _cubes = new List<GameObject>();
@@ -22,6 +25,7 @@ public class Tutorial : MonoBehaviour
     public Transform _initTrm;
     private IEnumerator Start()
     {
+        FindAnyObjectByType<MainUI>().TrunOn();
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(tutorialTextStart());
     }
@@ -54,14 +58,16 @@ public class Tutorial : MonoBehaviour
                 yield return new WaitForSeconds(2.0f);
                 break;
             case 5:
+                _playerTrm.GetComponent<PlayerController>().EndDash();
+                _playerTrm.GetComponent<CharacterController>().transform.position = new Vector3(0, 0, 0);
+
                 int randNum = 0;
                 for (int i = 0; i < 15; ++i)
                 {
                     randNum = Random.Range(0, 3);
-                    Instantiate(_cubes[randNum], _initTrm.position + new Vector3(0, 0, 15 * i), Quaternion.identity);
+                    Instantiate(_cubes[randNum], _initTrm.position + new Vector3(0, 2.35f, 15 * i), Quaternion.identity);
                 }
-                GameManager.Instance.playerTrm.GetComponent<PlayerController>().EndDash();
-                GameManager.Instance.playerTrm.position = new Vector3(0, 0, 0);
+                
                 yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.LeftShift));
                 yield return new WaitForSeconds(3.0f);
                 break;

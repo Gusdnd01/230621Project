@@ -18,6 +18,7 @@ public class Stage1 : MonoBehaviour
 
     private IEnumerator Start()
     {
+        FindAnyObjectByType<MainUI>().TrunOn();
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(lastMoment());
     }
@@ -42,5 +43,17 @@ public class Stage1 : MonoBehaviour
             GameObject obj = Instantiate(_cubes[i], _initPosition.position + new Vector3(0,2.35f, 15f * i), Quaternion.identity);
             mainCubes.Add(obj);
         }
+    }
+
+    public void Clear()
+    {
+        StartCoroutine(ClearCycle());
+    }
+
+    private IEnumerator ClearCycle()
+    {
+        _startTextTrigger?.Invoke("테스트를 완료하였습니다.");
+        yield return new WaitForSeconds(1.0f);
+        FindObjectOfType<MainUI>().Scenemove();
     }
 }

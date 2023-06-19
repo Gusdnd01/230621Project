@@ -6,16 +6,24 @@
                 <ui:VisualElement class="tab" style="background-image: none;" />
                 <ui:VisualElement class="tab" style="background-image: none;" />
                 <ui:VisualElement class="tab" style="background-image: none;" />
+                <ui:VisualElement class="tab" style="background-image: none;" />
+                <ui:VisualElement class="tab" style="background-image: none;" />
             </ui:VisualElement>
             <ui:VisualElement name="ContentBox">
-                <ui:VisualElement name="Content">
+                <ui:VisualElement name="Content" style="width: 500%;">
                     <ui:VisualElement name="Tutorial" class="tab_content" style="background-color: rgb(0, 0, 0);">
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="TutoBtn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="Game" class="tab_content" style="background-color: rgb(0, 0, 0); align-items: center; justify-content: center;">
-                        <ui:Button text="Button" display-tooltip-when-elided="true" name="GameBtn" class="content-btn" />
+                    <ui:VisualElement name="Stage1" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="s1Btn" class="content-btn" />
                     </ui:VisualElement>
-                    <ui:VisualElement name="ComingSoon" class="tab_content" style="background-color: rgb(0, 0, 0); align-items: center; justify-content: center;">
+                    <ui:VisualElement name="Stage2" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="s2Btn" class="content-btn" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="Stage3" class="tab_content" style="background-color: rgb(0, 0, 0);">
+                        <ui:Button text="Button" display-tooltip-when-elided="true" name="s3Btn" class="content-btn" />
+                    </ui:VisualElement>
+                    <ui:VisualElement name="ComingSoon" class="tab_content" style="background-color: rgb(0, 0, 0);">
                         <ui:Button text="Button" display-tooltip-when-elided="true" name="ComingSoonBtn" enable-rich-text="true" class="content-btn" style="visibility: visible; opacity: 0.46;" />
                     </ui:VisualElement>
                 </ui:VisualElement>

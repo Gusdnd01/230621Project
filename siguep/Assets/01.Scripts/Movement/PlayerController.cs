@@ -43,6 +43,11 @@ public class PlayerController : MonoBehaviour
         Init();
     }
 
+    public CharacterController GetController()
+    {
+        return _controller;
+    }
+
     private void Init()
     {
         Cursor.lockState = CursorLockMode.Locked;

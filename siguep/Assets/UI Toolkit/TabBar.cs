@@ -21,7 +21,7 @@ public class TabBar : MonoBehaviour
     private List<TabInfo> _tabList;
     private List<VisualElement> _vsList;
 
-    private List<Button> _buttonList;
+    public List<Button> _buttonList;
 
     private VisualElement _fadeImage;
 
@@ -30,6 +30,9 @@ public class TabBar : MonoBehaviour
     private void Awake()
     {
         _document = GetComponent<UIDocument>();
+
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
     }
 
     void LoadScene(int index)
@@ -38,6 +41,15 @@ public class TabBar : MonoBehaviour
             _fadeImage.AddToClassList(_startClassName);
             StartCoroutine(DelayCoroutine(1f, () => {
                 SceneManager.LoadSceneAsync(index);
+            }));
+        }));
+    }
+    void LoadScene(string sceneName )
+    {
+        StartCoroutine(DelayCoroutine(2.3f, () => {
+            _fadeImage.AddToClassList(_startClassName);
+            StartCoroutine(DelayCoroutine(1f, () => {
+                SceneManager.LoadSceneAsync(sceneName);
             }));
         }));
     }
@@ -71,20 +83,13 @@ public class TabBar : MonoBehaviour
             });
         });
 
-        int sceneIndex = SceneManager.sceneCountInBuildSettings+1;
+        int sceneIndex = 0;
 
-        _rootUI.Query<Button>(className: "content-btn").ToList().ForEach(b =>
-        {
-            _buttonList.Add(b);
-
-            sceneIndex--;
-            b.RegisterCallback<ClickEvent>(evt =>
-            {
-                print($"{b.parent.name} {sceneIndex}");
-                LoadScene(sceneIndex);
-            });
-
-        });
+        _rootUI.Q<Button>("TutoBtn").RegisterCallback<ClickEvent>(evt => LoadScene("Tutorial"));
+        _rootUI.Q<Button>("s1Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage1"));
+        _rootUI.Q<Button>("s2Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage2"));
+        _rootUI.Q<Button>("s3Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage3"));
+        _rootUI.Q<Button>("ComingSoonBtn").RegisterCallback<ClickEvent>(evt => LoadScene("Intro"));
     }
 
     private void Off(List<VisualElement> list)

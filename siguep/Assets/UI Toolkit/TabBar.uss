@@ -35,6 +35,8 @@
     border-top-right-radius: 5px;
     transition-duration: 0.5s;
     background-image: none;
+    margin-left: 10px;
+    margin-right: 10px;
 }
 
 .tab:hover {
@@ -42,7 +44,7 @@
 }
 
 .tab.on {
-    background-color: rgba(0, 0, 0, 255);
+    background-color: rgb(0, 0, 0);
 }
 
 #ContentBox > #Content {
@@ -123,7 +125,7 @@
 
 .fade.on {
     transition-duration: 0.5s;
-    background-color: rgba(0, 0, 0, 255);
+    background-color: rgb(0, 0, 0);
     flex-basis: 100%;
     flex-grow: 1;
     position: absolute;

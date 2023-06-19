@@ -16,7 +16,7 @@ public class Block : MonoBehaviour, IDamageable
     private ParticleSystem _explosion;
 
     private MainGameBlock _blockCompo;
-    public MainInfinity _mi;
+    public Stage1 _mi;
 
 
     private void Awake()
@@ -30,7 +30,7 @@ public class Block : MonoBehaviour, IDamageable
 
         elt = (Element)index;
 
-        _mi = FindObjectOfType<MainInfinity>();
+        _mi = FindObjectOfType<Stage1>();
 
         if (_mi == null)
         {
@@ -65,6 +65,12 @@ public class Block : MonoBehaviour, IDamageable
         if (_mi != null)
         {
             _mi.mainCubes.Remove(gameObject);
+
+            if(_mi.mainCubes.Count <= 0)
+            {
+                _mi.Clear();
+            }
+
             Destroy(gameObject);
         }
         else
