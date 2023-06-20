@@ -29,7 +29,7 @@ public class MainUI : MonoBehaviour
         }));
     }
 
-    public void TrunOn()
+    public void TurnOn()
     {
         _fade.RemoveFromClassList("on");
     }

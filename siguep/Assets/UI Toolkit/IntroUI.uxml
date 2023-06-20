@@ -5,18 +5,17 @@
             <ui:Button text="Quit" display-tooltip-when-elided="true" name="QuitBtn" class="btn" style="width: 750px;" />
             <ui:Button text="Option" display-tooltip-when-elided="true" name="OptionBtn" class="btn" style="width: 850px;" />
             <ui:Button text="Start" display-tooltip-when-elided="true" name="StartBtn" class="btn" style="width: 950px;" />
+            <ui:Button text="Infinity Mode" display-tooltip-when-elided="true" name="InfinityBtn" class="btn" style="width: 1050px;" />
         </ui:VisualElement>
         <ui:VisualElement name="TitleImage" class="title" style="position: absolute; left: 0; width: 1000px; height: 500px;">
             <ui:VisualElement name="Image" style="background-image: none; -unity-background-scale-mode: scale-to-fit; height: 100%;" />
         </ui:VisualElement>
         <ui:VisualElement name="OptionWindow" class="option" style="flex-direction: column; align-items: flex-end;">
             <ui:VisualElement>
-                <ui:Button text="Button" display-tooltip-when-elided="true" name="OptionQuitBtn" />
+                <ui:Button text="X" display-tooltip-when-elided="true" name="OptionQuitBtn" style="font-size: 50px;" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-grow: 1; right: 38px; align-items: center; justify-content: center; width: 1661px;">
-                <ui:DropdownField label="Dropdown" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Dropdown" style="width: 499px; height: 20px; font-size: 17px;" />
-                <ui:Slider picking-mode="Ignore" label="Slider" value="42" high-value="100" name="Slider" />
-                <ui:Toggle label="Toggle" name="Toggle" />
+                <ui:DropdownField label="Quality" index="-1" choices="System.Collections.Generic.List`1[System.String]" name="Dropdown" style="width: 869px; height: 62px; font-size: 32px; color: rgb(255, 255, 255); -unity-text-align: middle-center; background-color: rgb(0, 0, 0);" />
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="fadeImage" class="fade start" />

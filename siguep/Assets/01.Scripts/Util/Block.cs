@@ -19,6 +19,7 @@ public class Block : MonoBehaviour, IDamageable
 
     private MainGameBlock _blockCompo;
     public Stage1 _mi;
+    public MainGameBlock _mgb;
 
 
     private void Awake()
@@ -33,8 +34,8 @@ public class Block : MonoBehaviour, IDamageable
         elt = (Element)index;
 
         _mi = FindObjectOfType<Stage1>();
-
-        if (_mi == null)
+        _mgb = FindObjectOfType<MainGameBlock>();
+        if (_mi == null || _mgb == null)
         {
             return;
         }
@@ -69,11 +70,17 @@ public class Block : MonoBehaviour, IDamageable
         {
             _mi.mainCubes.Remove(gameObject);
 
-            if(_mi.mainCubes.Count <= 0)
+            if (_mi.mainCubes.Count <= 0)
             {
                 _mi.Clear();
             }
 
+            Destroy(gameObject);
+        }
+        else if (_mgb != null)
+        {
+            _mgb._cubes.Remove(gameObject);
+            GameManager.Instance.Score += 10;
             Destroy(gameObject);
         }
         else

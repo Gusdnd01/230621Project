@@ -28,7 +28,7 @@ public class Tutorial : MonoBehaviour
     private IEnumerator Start()
     {
         yield return new WaitForSeconds(1.0f);
-        FindAnyObjectByType<MainUI>().TrunOn();
+        FindAnyObjectByType<MainUI>().TurnOn();
         SoundManager.Instance.BGMPlay(_audioClip);
         while (true)
         {

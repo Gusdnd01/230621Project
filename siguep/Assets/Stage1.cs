@@ -29,7 +29,7 @@ public class Stage1 : MonoBehaviour
     {
         SoundManager.Instance.BGMPlay(mainNote);
         yield return new WaitForSeconds(1.0f);
-        FindAnyObjectByType<MainUI>().TrunOn();
+        FindAnyObjectByType<MainUI>().TurnOn();
         yield return new WaitForSeconds(1.0f);
         StartCoroutine(lastMoment());
     }
@@ -111,6 +111,7 @@ public class Stage1 : MonoBehaviour
     {
         _startTextTrigger?.Invoke("테스트를 완료하였습니다.");
         yield return new WaitForSeconds(1.0f);
+        PlayerPrefs.SetInt($"Stage{_stageIndex - 1}", 1);
         FindObjectOfType<MainUI>().Scenemove();
     }
 }

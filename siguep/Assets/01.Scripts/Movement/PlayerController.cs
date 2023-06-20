@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (_isDead || !GameManager.Instance.isMoving) return;
         _curHP -= Time.deltaTime * _hpMultiplier;
-
+        _curHP = Mathf.Clamp(_curHP, -1, _maxHP);
         _slider.value = _curHP/_maxHP;
 
         if( _curHP <= 0)
@@ -124,7 +124,15 @@ public class PlayerController : MonoBehaviour
     public void OnDead()
     {
         _isDead = true;
-        FindAnyObjectByType<Stage1>().Dead();
+        if(FindAnyObjectByType<Stage1>() != null)
+        {
+            FindAnyObjectByType<Stage1>().Dead();
+        }
+        else if(FindAnyObjectByType<MainGameBlock>() != null)
+        {
+            FindAnyObjectByType<MainGameBlock>().Dead();
+        }
+        
         _animator.SetDie();
     }
 

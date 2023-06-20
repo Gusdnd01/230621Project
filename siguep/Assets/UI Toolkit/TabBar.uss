@@ -136,7 +136,7 @@
 .fade {
     opacity: 0;
     visibility: hidden;
-    transition-duration: 0.5s;
+    transition-duration: 1s;
     position: absolute;
 }
 

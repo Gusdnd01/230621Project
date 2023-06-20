@@ -27002,6 +27002,11 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5776309402306582802, guid: d51c77162a9709e4f92d1698996d7d10,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d51c77162a9709e4f92d1698996d7d10, type: 3}
 --- !u!1 &878770220 stripped
@@ -32306,6 +32311,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _audioClip: {fileID: 8300000, guid: 2cebe5ef59f447d4d803665e3ecf1a2f, type: 3}
+  _uiSound: {fileID: 8300000, guid: 92e82c4bff557c8439735b31ec8ca179, type: 3}
   _startClassName: start
   _assetName:
   - High

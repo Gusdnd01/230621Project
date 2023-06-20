@@ -2759,6 +2759,9 @@ MonoBehaviour:
   _dashFX: {fileID: 1701541073}
   isMoving: 0
   score: 0
+  _isSelect: 0
+  _sceneName: New Scene
+  stage: 
 --- !u!4 &84921046
 Transform:
   m_ObjectHideFlags: 0
@@ -2842,7 +2845,7 @@ MonoBehaviour:
   _notes: []
   _mulnocu: []
   mainCubes: []
-  mainNote: {fileID: 0}
+  mainNote: {fileID: 8300000, guid: 5fa01206a829f934b90ceecd812e209f, type: 3}
   cubeCount: 0
   _stageIndex: 1
   _initPosition: {fileID: 809707058}

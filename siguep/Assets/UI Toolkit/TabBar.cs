@@ -27,7 +27,8 @@ public class TabBar : MonoBehaviour
 
     public string _startClassName = "start";
     public AudioClip _audioClip;
-
+    public AudioClip _uiClick;
+    public AudioClip _gameStartSound;
 
     private void Awake()
     {
@@ -39,20 +40,18 @@ public class TabBar : MonoBehaviour
 
     void LoadScene(int index)
     {
-        StartCoroutine(DelayCoroutine(2.3f, () => {
-            _fadeImage.AddToClassList(_startClassName);
-            StartCoroutine(DelayCoroutine(1f, () => {
-                SceneManager.LoadSceneAsync(index);
-            }));
+        _fadeImage.AddToClassList(_startClassName);
+        StartCoroutine(DelayCoroutine(1f, () =>
+        {
+            SceneManager.LoadSceneAsync(index);
         }));
     }
-    void LoadScene(string sceneName )
+    void LoadScene(string sceneName)
     {
-        StartCoroutine(DelayCoroutine(2.3f, () => {
-            _fadeImage.AddToClassList(_startClassName);
-            StartCoroutine(DelayCoroutine(1f, () => {
-                SceneManager.LoadSceneAsync(sceneName);
-            }));
+        _fadeImage.AddToClassList(_startClassName);
+        StartCoroutine(DelayCoroutine(1f, () =>
+        {
+            SceneManager.LoadSceneAsync(sceneName);
         }));
     }
 
@@ -60,7 +59,7 @@ public class TabBar : MonoBehaviour
 
     private IEnumerator Start()
     {
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(1f);
         SoundManager.Instance.BGMPlay(_audioClip);
         _fadeImage.RemoveFromClassList(_startClassName);
     }
@@ -86,6 +85,7 @@ public class TabBar : MonoBehaviour
 
             t.RegisterCallback<ClickEvent>(evt =>
             {
+                SoundManager.Instance.SFXPlay(_uiClick);
                 Off(_vsList);
                 content.style.left = new Length(-myIdx * 100, LengthUnit.Percent);
                 t.AddToClassList("on");
@@ -94,11 +94,36 @@ public class TabBar : MonoBehaviour
 
         int sceneIndex = 0;
 
-        _rootUI.Q<Button>("TutoBtn").RegisterCallback<ClickEvent>(evt => LoadScene("Tutorial"));
-        _rootUI.Q<Button>("s1Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage1"));
-        _rootUI.Q<Button>("s2Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage2"));
-        _rootUI.Q<Button>("s3Btn").RegisterCallback<ClickEvent>(evt => LoadScene("Stage3"));
-        _rootUI.Q<Button>("ComingSoonBtn").RegisterCallback<ClickEvent>(evt => LoadScene("Intro"));
+        _rootUI.Q<Button>("TutoBtn").RegisterCallback<ClickEvent>(evt =>
+        {
+            SoundManager.Instance.SFXPlay(_uiClick);
+            LoadScene("Tutorial");
+            SoundManager.Instance.SFXPlay(_gameStartSound);
+        });
+        _rootUI.Q<Button>("s1Btn").RegisterCallback<ClickEvent>(evt =>
+        {
+            SoundManager.Instance.SFXPlay(_uiClick);
+            LoadScene("Stage1");
+            SoundManager.Instance.SFXPlay(_gameStartSound);
+        });
+        _rootUI.Q<Button>("s2Btn").RegisterCallback<ClickEvent>(evt =>
+        {
+            SoundManager.Instance.SFXPlay(_uiClick);
+            LoadScene("Stage2");
+            SoundManager.Instance.SFXPlay(_gameStartSound);
+        });
+        _rootUI.Q<Button>("s3Btn").RegisterCallback<ClickEvent>(evt =>
+        {
+            SoundManager.Instance.SFXPlay(_uiClick);
+            LoadScene("Stage3");
+            SoundManager.Instance.SFXPlay(_gameStartSound);
+        });
+        _rootUI.Q<Button>("ComingSoonBtn").RegisterCallback<ClickEvent>(evt =>
+        {
+            SoundManager.Instance.SFXPlay(_uiClick);
+            LoadScene("Intro");
+            SoundManager.Instance.SFXPlay(_gameStartSound);
+        });
 
         _rootUI.Q("Tutotab").AddToClassList("on");
     }

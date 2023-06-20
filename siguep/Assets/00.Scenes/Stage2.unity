@@ -2948,7 +2948,7 @@ MonoBehaviour:
   - {fileID: 3740014523769661361, guid: c7862c5f70ceb0542901a75062ab35df, type: 3}
   - {fileID: 4615428705816294648, guid: b6562391b54f2f842a62aca7057a36e9, type: 3}
   mainCubes: []
-  mainNote: {fileID: 0}
+  mainNote: {fileID: 8300000, guid: 5fa01206a829f934b90ceecd812e209f, type: 3}
   cubeCount: 0
   _stageIndex: 2
   _initPosition: {fileID: 809707058}
