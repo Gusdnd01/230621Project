@@ -18,14 +18,32 @@ public class Block : MonoBehaviour, IDamageable
     private ParticleSystem _explosion;
 
     private MainGameBlock _blockCompo;
-    public Stage1 _mi;
+    public Stage _mi;
     public MainGameBlock _mgb;
 
+    IEnumerator Dissolve()
+    {
+        float value = 1.0f;
+        while (true)
+        {
+            value -= Time.deltaTime;
+            mat.SetFloat("_Dissolve", value);
+            if(value <= 0.0f)
+            {
+                value = 0.0f;
+                mat.SetFloat("_Dissolve", value);
+                break;
+            }
+            yield return new WaitForSeconds(Time.deltaTime);
+        }
+    }
 
     private void Awake()
-    { 
+    {
         ms = GetComponent<MeshRenderer>();
         mat = ms.material;
+
+        StartCoroutine(Dissolve());
 
         index = 
             mat.name[0] == 'R' ? 0 : 
@@ -33,7 +51,7 @@ public class Block : MonoBehaviour, IDamageable
 
         elt = (Element)index;
 
-        _mi = FindObjectOfType<Stage1>();
+        _mi = FindObjectOfType<Stage>();
         _mgb = FindObjectOfType<MainGameBlock>();
         if (_mi == null || _mgb == null)
         {

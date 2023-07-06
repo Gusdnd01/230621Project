@@ -15538,6 +15538,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3740014523769661354, guid: c7862c5f70ceb0542901a75062ab35df,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3740014523769661357, guid: c7862c5f70ceb0542901a75062ab35df,
         type: 3}
       propertyPath: m_RootOrder
@@ -15597,6 +15602,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: RedCube
+      objectReference: {fileID: 0}
+    - target: {fileID: 3740014523769661361, guid: c7862c5f70ceb0542901a75062ab35df,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c7862c5f70ceb0542901a75062ab35df, type: 3}
@@ -32259,8 +32269,9 @@ GameObject:
   - component: {fileID: 1121953565}
   - component: {fileID: 1121953564}
   - component: {fileID: 1121953566}
+  - component: {fileID: 1121953567}
   m_Layer: 5
-  m_Name: UIDocument
+  m_Name: ui
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32321,6 +32332,23 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7b7fd9122c28c4d15b667c7040e3b3fd, type: 2}
   - {fileID: 11400000, guid: e1260c1148f6143b28bae5ace5e9c5d1, type: 2}
   - {fileID: 11400000, guid: d0e2fc18fe036412f8223b3b3d9ad574, type: 2}
+--- !u!114 &1121953567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1121953563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cff83536435f1ec4c97abe7211e34a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: {fileID: 665729737}
+  profile: {fileID: 0}
+  turnOnClip: {fileID: 8300000, guid: dfb5f2b78a7c5bc4a8f0bed908262415, type: 3}
+  turnOffClip: {fileID: 8300000, guid: ca82027376ef6b248b7763101accab20, type: 3}
+  glitch_speed: 1
 --- !u!1 &1141459312
 GameObject:
   m_ObjectHideFlags: 0

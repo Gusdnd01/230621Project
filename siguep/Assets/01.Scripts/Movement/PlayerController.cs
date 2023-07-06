@@ -124,9 +124,9 @@ public class PlayerController : MonoBehaviour
     public void OnDead()
     {
         _isDead = true;
-        if(FindAnyObjectByType<Stage1>() != null)
+        if(FindAnyObjectByType<Stage>() != null)
         {
-            FindAnyObjectByType<Stage1>().Dead();
+            FindAnyObjectByType<Stage>().Dead();
         }
         else if(FindAnyObjectByType<MainGameBlock>() != null)
         {
